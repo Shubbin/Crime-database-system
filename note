@@ -1,0 +1,4 @@
+node Backend/scripts/createAdmin.js - for admin creation
+
+
+users should have access to the db only view not edit
