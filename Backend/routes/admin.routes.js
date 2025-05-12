@@ -4,7 +4,7 @@ import {
   deleteUser,
   assignBadgeNumber,
 } from "../controllers/admin.controller.js";
-import { authenticateUser } from "../middleware/auth.middleware.js";
+import { authenticateUser } from "../middleware/authMiddleware.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 import { updateRole } from "../controllers/updateRole.controller.js";
 
