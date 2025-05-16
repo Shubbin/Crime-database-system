@@ -5,11 +5,13 @@ const criminalSchema = new mongoose.Schema({
   dob: { type: Date, required: true },
   address: { type: String, required: true },
   crimeDetails: { type: String, required: true },
-  arrestDate: { type: Date, default: Date.now },
-  status: { type: String, enum: ['arrested', 'released', 'convicted'], default: 'arrested' },
-  addedBy: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+  arrestDate: { type: Date, required: true },
+  status: { type: String, enum: ['In Custody', 'Released'], required: true },
+  addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  lastUpdatedBy: {
+    name: { type: String },
+    badgeNumber: { type: String, default: null }
+  }
+}, { timestamps: true });
 
 export const Criminal = mongoose.model('Criminal', criminalSchema);

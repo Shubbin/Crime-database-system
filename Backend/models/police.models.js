@@ -6,6 +6,7 @@ const policeSchema = new mongoose.Schema({
   password: { type: String, required: true },
   dob: { type: Date, required: true },
   address: { type: String, required: true },
+  profilePic:{ type: String, required:true},
   maritalStatus: { type: String, enum: ['single', 'married', 'divorced', 'widowed'], required: true },
   nextOfKin: {
     fullname: { type: String, required: true },

@@ -1,12 +1,18 @@
 import express from 'express';
-import { addCriminal, updateCriminal, getCriminals } from '../controllers/criminal.controller.js';
-import { authenticateUser } from '../middleware/authMiddleware.js';
-import { isPoliceOrAdmin } from '../middleware/isPoliceOrAdmin.js';
+import {
+  getCriminals,
+  addCriminal,
+  updateCriminal,
+  deleteCriminal
+} from '../controllers/criminal.controller.js';
+import { authenticateUser } from '../middleware/authenticateUser.js';
+import { isAdmin } from '../middleware/isAdmin.js';
 
 const router = express.Router();
 
-router.post('/add', authenticateUser, isPoliceOrAdmin, addCriminal);
-router.put('/update/:criminalId', authenticateUser, isPoliceOrAdmin, updateCriminal);
-router.get('/view', authenticateUser, isPoliceOrAdmin, getCriminals); // optional protection
+router.get('/', authenticateUser, getCriminals);
+router.post('/add', authenticateUser, addCriminal);
+router.put('/update/:criminalId', authenticateUser, updateCriminal);
+router.delete('/delete/:criminalId', authenticateUser, isAdmin, deleteCriminal);
 
 export default router;
