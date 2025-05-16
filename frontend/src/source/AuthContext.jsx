@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -12,18 +13,28 @@ const AuthProvider = ({ children }) => {
       axios
         .get("/api/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true, // send cookies if needed
+          withCredentials: true,
         })
-        .then((response) => setUser(response.data))
+        .then((response) => {
+          setUser(response.data);
+          setLoading(false);
+        })
         .catch(() => {
           localStorage.removeItem("token");
           setUser(null);
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, []);
 
   const login = (userData) => {
     setUser(userData);
+    // Optionally, save token on login
+    if (userData.token) {
+      localStorage.setItem("token", userData.token);
+    }
   };
 
   const logout = async () => {
@@ -36,7 +47,7 @@ const AuthProvider = ({ children }) => {
 
       if (response.status === 200) {
         setUser(null);
-        localStorage.removeItem("token"); // clear token if stored
+        localStorage.removeItem("token");
       } else {
         console.error("Logout failed");
       }
@@ -46,7 +57,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
